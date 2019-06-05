@@ -1,0 +1,80 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: worker-template
+  namespace: kubeflow
+data:
+  cpuTrainTemplate.yaml: |-
+    apiVersion: "kubeflow.org/v1beta1"
+    kind: TFJob
+    metadata:
+      name: {{.WorkerID}}
+      namespace: kubeflow
+    spec:
+      tfReplicaSpecs:
+        Worker:
+          replicas: 1
+          restartPolicy: Never
+          template:
+            spec:
+              containers:
+                - name: tensorflow
+                  image: loomlike/mlads2019-tf-mnist
+                  imagePullPolicy: Always
+                  command:
+                    - "python"
+                    - "/app/src/kubeflow/kube_mnist_train.py"
+                    - "--blob-path"
+                    - "https://mlads2019blob.blob.core.windows.net/data"
+                    {{- with .HyperParameters}}
+                    {{- range .}}
+                    - "{{.Name}}={{.Value}}"
+                    {{- end}}
+                    {{- end}}
+                  volumeMounts:
+                    - name: azurefile
+                      subPath: {{.StudyID}}
+                      mountPath: /tmp/tensorflow
+              volumes:  # Persistent storage to store results
+                - name: azurefile
+                  persistentVolumeClaim:
+                    claimName: azurefile
+  gpuTrainTemplate.yaml : |-
+    apiVersion: "kubeflow.org/v1beta1"
+    kind: TFJob
+    metadata:
+      name: {{.WorkerID}}
+      namespace: kubeflow
+    spec:
+      tfReplicaSpecs:
+        Worker:
+          replicas: 1
+          restartPolicy: Never
+          template:
+            spec:
+              containers:
+                - name: tensorflow
+                  image: loomlike/mlads2019-tf-mnist:gpu
+                  imagePullPolicy: Always
+                  command:
+                    - "python"
+                    - "/app/src/kubeflow/kube_mnist_train.py"
+                    - "--blob-path"
+                    - "https://mlads2019blob.blob.core.windows.net/data"
+                    {{- with .HyperParameters}}
+                    {{- range .}}
+                    - "{{.Name}}={{.Value}}"
+                    {{- end}}
+                    {{- end}}
+                  resources:
+                    limits:
+                      nvidia.com/gpu: 1  # Make sure your nodes have gpu
+                  volumeMounts:
+                    - name: azurefile
+                      subPath: {{.StudyID}}
+                      mountPath: /tmp/tensorflow
+              volumes:  # Persistent storage to store results
+                - name: azurefile
+                  persistentVolumeClaim:
+                    claimName: azurefile
+# TODO maybe metricsCollectorSpec if needed

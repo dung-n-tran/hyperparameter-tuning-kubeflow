@@ -1,0 +1,33 @@
+apiVersion: kubeflow.org/v1beta1
+kind: TFJob
+metadata:
+  name: {NAME}
+  namespace: kubeflow
+spec:
+  tfReplicaSpecs:
+    Worker:
+      replicas: 1
+      restartPolicy: Never
+      template:
+        spec:
+          containers:
+            - name: tensorflow
+              image: loomlike/mlads2019-tf-mnist  # use :gpu tag to use gpu
+              imagePullPolicy: Always
+              command:
+                - "python"
+                - "/app/src/kubeflow/kube_mnist_test.py"
+                - "--blob-path"
+                - "https://mlads2019blob.blob.core.windows.net/data"
+                - "--model-dir"
+                - {MODEL_DIR}
+#              resources:
+#                limits:
+#                  nvidia.com/gpu: 1  # Make sure your nodes have gpu
+              volumeMounts:
+                - name: azurefile
+                  mountPath: /tmp/tensorflow
+          volumes:  # Persistent storage to store results
+            - name: azurefile
+              persistentVolumeClaim:
+                claimName: azurefile

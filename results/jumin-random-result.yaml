@@ -1,0 +1,118 @@
+Name:         jumin-random
+Namespace:    kubeflow
+Labels:       controller-tools.k8s.io=1.0
+Annotations:  <none>
+API Version:  kubeflow.org/v1alpha1
+Kind:         StudyJob
+Metadata:
+  Creation Timestamp:  2019-06-05T19:32:07Z
+  Generation:          1
+  Resource Version:    962984
+  Self Link:           /apis/kubeflow.org/v1alpha1/namespaces/kubeflow/studyjobs/jumin-random
+  UID:                 9b324813-87c8-11e9-9dae-0296cd179eaa
+Spec:
+  Metricsnames:
+    training_acc
+    model_id
+  Objectivevaluename:  validation_acc
+  Optimizationgoal:    0.99
+  Optimizationtype:    maximize
+  Owner:               crd
+  Parameterconfigs:
+    Feasible:
+      Max:          0.0
+      Min:          -8.0
+    Name:           --learning-rate
+    Parametertype:  double
+    Feasible:
+      List:
+        16
+        32
+        64
+        128
+        256
+    Name:           --batch-size
+    Parametertype:  categorical
+    Feasible:
+      Max:          500
+      Min:          1
+    Name:           --first-layer-neurons
+    Parametertype:  int
+    Feasible:
+      Max:          500
+      Min:          1
+    Name:           --second-layer-neurons
+    Parametertype:  int
+  Requestcount:     3
+  Study Name:       jumin-random
+  Suggestion Spec:
+    Request Number:        2
+    Suggestion Algorithm:  random
+    Suggestion Parameters:
+      Name:   SuggestionCount
+      Value:  0
+  Worker Spec:
+    Go Template:
+      Template Path:  cpuTrainTemplate.yaml
+Status:
+  Best Objective Value:         0.9825000166893005
+  Best Trial Id:                kb6d282ea43632d6
+  Best Worker Id:               yb27a87a59dac0ed
+  Completion Time:              2019-06-05T19:36:17Z
+  Conditon:                     Completed
+  Early Stopping Parameter Id:  
+  Last Reconcile Time:          2019-06-05T19:36:17Z
+  Start Time:                   2019-06-05T19:32:07Z
+  Studyid:                      lfa30a2891c6bc86
+  Suggestion Count:             3
+  Suggestion Parameter Id:      ba1ec073e646470e
+  Trials:
+    Trialid:  gf76aeb05bc0632e
+    Workeridlist:
+      Completion Time:  2019-06-05T19:33:12Z
+      Conditon:         Completed
+      Kind:             TFJob
+      Objective Value:  0.9807000160217285
+      Start Time:       2019-06-05T19:32:08Z
+      Workerid:         n4947173b8be14fe
+    Trialid:            l94f0b0fbef09a6b
+    Workeridlist:
+      Completion Time:  2019-06-05T19:33:12Z
+      Conditon:         Completed
+      Kind:             TFJob
+      Objective Value:  0.9707000255584717
+      Start Time:       2019-06-05T19:32:08Z
+      Workerid:         q18f3b6ec4c04563
+    Trialid:            td776a1241e60b2e
+    Workeridlist:
+      Completion Time:  2019-06-05T19:35:14Z
+      Conditon:         Completed
+      Kind:             TFJob
+      Objective Value:  0.9635000228881836
+      Start Time:       2019-06-05T19:33:12Z
+      Workerid:         v286b68036df7a80
+    Trialid:            kb6d282ea43632d6
+    Workeridlist:
+      Completion Time:  2019-06-05T19:35:15Z
+      Conditon:         Completed
+      Kind:             TFJob
+      Objective Value:  0.9825000166893005
+      Start Time:       2019-06-05T19:33:13Z
+      Workerid:         yb27a87a59dac0ed
+    Trialid:            pc543cd24ffdf2cd
+    Workeridlist:
+      Completion Time:  2019-06-05T19:36:15Z
+      Conditon:         Completed
+      Kind:             TFJob
+      Objective Value:  0.9812999963760376
+      Start Time:       2019-06-05T19:35:15Z
+      Workerid:         pd9e9d0f37d6fcf0
+    Trialid:            xc1a0fb067f67c4e
+    Workeridlist:
+      Completion Time:  2019-06-05T19:36:16Z
+      Conditon:         Completed
+      Kind:             TFJob
+      Objective Value:  0.8773999810218811
+      Start Time:       2019-06-05T19:35:15Z
+      Workerid:         z16c8be082a92fbe
+Events:                 <none>

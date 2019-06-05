@@ -1,0 +1,47 @@
+apiVersion: "kubeflow.org/v1alpha1"
+kind: StudyJob
+metadata:
+  namespace: kubeflow
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: {NAME}
+spec:
+  studyName: {NAME}
+  owner: crd
+  optimizationtype: maximize
+  objectivevaluename: validation_acc  # Should be the same as the logging metrics name
+  optimizationgoal: 0.99
+  requestcount: 3
+  metricsnames:
+    - training_acc  # Should be the same as the logging metrics name
+    - model_id
+  parameterconfigs:
+    - name: --learning-rate
+      parametertype: double
+      feasible:
+        min: "-8.0"
+        max: "0.0"
+    - name: --batch-size
+      parametertype: categorical
+      feasible:
+        list:
+        - "16"
+        - "32"
+        - "64"
+        - "128"
+        - "256"
+    - name: --first-layer-neurons
+      parametertype: int
+      feasible:
+        min: "1"
+        max: "500"
+    - name: --second-layer-neurons
+      parametertype: int
+      feasible:
+        min: "1"
+        max: "500"
+  workerSpec:
+    goTemplate:
+      templatePath: "cpuTrainTemplate.yaml"  # gpuTrainTemplate.yaml to use gpu
+  suggestionSpec:
+    {SPEC}
